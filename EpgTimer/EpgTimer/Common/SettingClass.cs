@@ -241,6 +241,7 @@ namespace EpgTimer
         private bool minHide;
         private bool mouseScrollAuto;
         private int noStyle;
+        private bool fixSearchResult;
 
         public bool UseCustomEpgView
         {
@@ -927,6 +928,11 @@ namespace EpgTimer
             get { return noStyle; }
             set { noStyle = value; }
         }
+        public bool FixSearchResult
+        {
+            get { return fixSearchResult; }
+            set { fixSearchResult = value; }
+        }
         
         
         public Settings()
@@ -962,10 +968,10 @@ namespace EpgTimer
             resColumnHead = "";
             resSortDirection = ListSortDirection.Ascending;
             lastWindowState = System.Windows.WindowState.Normal;
-            mainWndLeft = 0;
-            mainWndTop = 0;
-            mainWndWidth = 0;
-            mainWndHeight = 0;
+            mainWndLeft = -100;
+            mainWndTop = -100;
+            mainWndWidth = -100;
+            mainWndHeight = -100;
             closeMin = false;
             wakeMin = false;
             viewButtonList = new List<string>();
@@ -1052,6 +1058,7 @@ namespace EpgTimer
             minHide = true;
             mouseScrollAuto = false;
             noStyle = 0;
+            fixSearchResult = false;
         }
 
         [NonSerialized()]

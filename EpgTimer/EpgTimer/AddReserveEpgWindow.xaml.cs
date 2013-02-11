@@ -105,7 +105,7 @@ namespace EpgTimer
                     FlowDocument flowDoc = new FlowDocument();
                     flowDoc.Blocks.Add(new Paragraph(new Run(text)));
                     richTextBox_descInfo.Document = flowDoc;
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -136,7 +136,10 @@ namespace EpgTimer
                 if (eventInfo.StartTimeFlag == 0)
                 {
                     MessageBox.Show("開始時間未定のため予約できません");
-                    DialogResult = false;
+                    if (this.Visibility == System.Windows.Visibility.Visible)
+                    {
+                        DialogResult = false;
+                    }
                 }
 
                 ReserveData reserveInfo = new ReserveData();
@@ -158,7 +161,8 @@ namespace EpgTimer
                 }
 
                 UInt64 key = CommonManager.Create64Key(eventInfo.original_network_id, eventInfo.transport_stream_id, eventInfo.service_id);
-                if( ChSet5.Instance.ChList.ContainsKey(key) == true ){
+                if (ChSet5.Instance.ChList.ContainsKey(key) == true)
+                {
                     reserveInfo.StationName = ChSet5.Instance.ChList[key].ServiceName;
                 }
                 reserveInfo.OriginalNetworkID = eventInfo.original_network_id;
@@ -190,12 +194,39 @@ namespace EpgTimer
             {
                 MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
             }
-            DialogResult = true;
+            if (this.Visibility == System.Windows.Visibility.Visible)
+            {
+                DialogResult = true;
+            }
         }
 
         private void button_cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            //
+            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+            {
+                switch (e.Key)
+                {
+                    case Key.A:
+                        this.button_add_reserve.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        break;
+                }
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Escape:
+                        this.button_cancel.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        break;
+                }
+            }
         }
     }
 }

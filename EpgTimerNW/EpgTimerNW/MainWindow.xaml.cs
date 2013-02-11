@@ -157,19 +157,19 @@ namespace EpgTimer
                 }
 
                 //ウインドウ位置の復元
-                if (Settings.Instance.MainWndTop != 0)
+                if (Settings.Instance.MainWndTop != -100)
                 {
                     this.Top = Settings.Instance.MainWndTop;
                 }
-                if (Settings.Instance.MainWndLeft != 0)
+                if (Settings.Instance.MainWndLeft != -100)
                 {
                     this.Left = Settings.Instance.MainWndLeft;
                 }
-                if (Settings.Instance.MainWndWidth != 0)
+                if (Settings.Instance.MainWndWidth != -100)
                 {
                     this.Width = Settings.Instance.MainWndWidth;
                 }
-                if (Settings.Instance.MainWndHeight != 0)
+                if (Settings.Instance.MainWndHeight != -100)
                 {
                     this.Height = Settings.Instance.MainWndHeight;
                 }
@@ -179,7 +179,7 @@ namespace EpgTimer
                 //上のボタン
                 Button settingButton = new Button();
                 settingButton.MinWidth = 75;
-                settingButton.Margin = new Thickness(2, 2, 2, 15);
+                settingButton.Margin = new Thickness(2, 2, 2, 5);
                 settingButton.Click += new RoutedEventHandler(settingButton_Click);
                 settingButton.Content = "設定";
                 if (Settings.Instance.NoStyle == 0)
@@ -190,7 +190,7 @@ namespace EpgTimer
 
                 Button searchButton = new Button();
                 searchButton.MinWidth = 75;
-                searchButton.Margin = new Thickness(2, 2, 2, 15);
+                searchButton.Margin = new Thickness(2, 2, 2, 5);
                 searchButton.Click += new RoutedEventHandler(searchButton_Click);
                 searchButton.Content = "検索";
                 if (Settings.Instance.NoStyle == 0)
@@ -201,7 +201,7 @@ namespace EpgTimer
 
                 Button closeButton = new Button();
                 closeButton.MinWidth = 75;
-                closeButton.Margin = new Thickness(2, 2, 2, 15);
+                closeButton.Margin = new Thickness(2, 2, 2, 5);
                 closeButton.Click += new RoutedEventHandler(closeButton_Click);
                 closeButton.Content = "終了";
                 if (Settings.Instance.NoStyle == 0)
@@ -212,7 +212,7 @@ namespace EpgTimer
 
                 Button stanbyButton = new Button();
                 stanbyButton.MinWidth = 75;
-                stanbyButton.Margin = new Thickness(2, 2, 2, 15);
+                stanbyButton.Margin = new Thickness(2, 2, 2, 5);
                 stanbyButton.Click += new RoutedEventHandler(standbyButton_Click);
                 stanbyButton.Content = "スタンバイ";
                 if (Settings.Instance.NoStyle == 0)
@@ -223,7 +223,7 @@ namespace EpgTimer
 
                 Button suspendButton = new Button();
                 suspendButton.MinWidth = 75;
-                suspendButton.Margin = new Thickness(2, 2, 2, 15);
+                suspendButton.Margin = new Thickness(2, 2, 2, 5);
                 suspendButton.Click += new RoutedEventHandler(suspendButton_Click);
                 suspendButton.Content = "休止";
                 if (Settings.Instance.NoStyle == 0)
@@ -234,7 +234,7 @@ namespace EpgTimer
 
                 Button epgCapButton = new Button();
                 epgCapButton.MinWidth = 75;
-                epgCapButton.Margin = new Thickness(2, 2, 2, 15);
+                epgCapButton.Margin = new Thickness(2, 2, 2, 5);
                 epgCapButton.Click += new RoutedEventHandler(epgCapButton_Click);
                 epgCapButton.Content = "EPG取得";
                 if (Settings.Instance.NoStyle == 0)
@@ -245,7 +245,7 @@ namespace EpgTimer
 
                 Button epgReloadButton = new Button();
                 epgReloadButton.MinWidth = 75;
-                epgReloadButton.Margin = new Thickness(2, 2, 2, 15);
+                epgReloadButton.Margin = new Thickness(2, 2, 2, 5);
                 epgReloadButton.Click += new RoutedEventHandler(epgReloadButton_Click);
                 epgReloadButton.Content = "EPG再読み込み";
                 if (Settings.Instance.NoStyle == 0)
@@ -256,7 +256,7 @@ namespace EpgTimer
 
                 Button custum1Button = new Button();
                 custum1Button.MinWidth = 75;
-                custum1Button.Margin = new Thickness(2, 2, 2, 15);
+                custum1Button.Margin = new Thickness(2, 2, 2, 5);
                 custum1Button.Click += new RoutedEventHandler(custum1Button_Click);
                 custum1Button.Content = "カスタム１";
                 if (Settings.Instance.NoStyle == 0)
@@ -267,7 +267,7 @@ namespace EpgTimer
 
                 Button custum2Button = new Button();
                 custum2Button.MinWidth = 75;
-                custum2Button.Margin = new Thickness(2, 2, 2, 15);
+                custum2Button.Margin = new Thickness(2, 2, 2, 5);
                 custum2Button.Click += new RoutedEventHandler(custum2Button_Click);
                 custum2Button.Content = "カスタム２";
                 if (Settings.Instance.NoStyle == 0)
@@ -278,7 +278,7 @@ namespace EpgTimer
 
                 Button nwTVEndButton = new Button();
                 nwTVEndButton.MinWidth = 75;
-                nwTVEndButton.Margin = new Thickness(2, 2, 2, 15);
+                nwTVEndButton.Margin = new Thickness(2, 2, 2, 5);
                 nwTVEndButton.Click += new RoutedEventHandler(nwTVEndButton_Click);
                 nwTVEndButton.Content = "NetworkTV終了";
                 if (Settings.Instance.NoStyle == 0)
@@ -289,7 +289,7 @@ namespace EpgTimer
 
                 Button logViewButton = new Button();
                 logViewButton.MinWidth = 75;
-                logViewButton.Margin = new Thickness(2, 2, 2, 15);
+                logViewButton.Margin = new Thickness(2, 2, 2, 5);
                 logViewButton.Click += new RoutedEventHandler(logViewButton_Click);
                 logViewButton.Content = "情報通知ログ";
                 if (Settings.Instance.NoStyle == 0)
@@ -300,7 +300,7 @@ namespace EpgTimer
 
                 Button connectButton = new Button();
                 connectButton.MinWidth = 75;
-                connectButton.Margin = new Thickness(2, 2, 2, 15);
+                connectButton.Margin = new Thickness(2, 2, 2, 5);
                 connectButton.Click += new RoutedEventHandler(connectButton_Click);
                 connectButton.Content = "再接続";
                 if (Settings.Instance.NoStyle == 0)
@@ -615,6 +615,22 @@ namespace EpgTimer
                     }
                 }
             }
+            //
+            foreach (KeyValuePair<string, Button> kvp1 in this.buttonList)
+            {
+                switch (kvp1.Key)
+                {
+                    case "設定":
+                        kvp1.Value.ToolTip = "Ctrl + C";
+                        break;
+                    case "検索":
+                        kvp1.Value.ToolTip = "Ctrl + F";
+                        break;
+                    case "終了":
+                        kvp1.Value.ToolTip = "Alt + F4";
+                        break;
+                }
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -806,6 +822,16 @@ namespace EpgTimer
 
         void searchButton_Click(object sender, RoutedEventArgs e)
         {
+            // Hide()したSearchWindowを復帰
+            foreach (Window win1 in this.OwnedWindows)
+            {
+                if (win1.GetType() == typeof(SearchWindow))
+                {
+                    win1.Show();
+                    return;
+                }
+            }
+            //
             SearchCmd();
         }
 
@@ -1366,5 +1392,66 @@ namespace EpgTimer
                 taskTray.Text = "次の予約なし";
             }
         }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                switch (e.Key)
+                {
+                    case Key.C:
+                        this.buttonList["設定"].RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        break;
+                    case Key.F:
+                        this.buttonList["検索"].RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        break;
+                    case Key.D1:
+                        new BlackoutWindow(this).showWindow(this.tabItem_reserve_Title.Text);
+                        this.tabItem_reserve.IsSelected = true;
+                        break;
+                    case Key.D2:
+                        new BlackoutWindow(this).showWindow(this.tabItem_tunerReserve_Title.Text);
+                        this.tabItem_tunerReserve.IsSelected = true;
+                        break;
+                    case Key.D3:
+                        new BlackoutWindow(this).showWindow(this.tabItem_recinfo_Title.Text);
+                        this.tabItem_recinfo.IsSelected = true;
+                        break;
+                    case Key.D4:
+                        new BlackoutWindow(this).showWindow(this.tabItem_epgAutoAdd_Title.Text);
+                        this.tabItem_epgAutoAdd.IsSelected = true;
+                        break;
+                    case Key.D5:
+                        this.moveTo_tabItem_epg();
+                        break;
+                }
+                //
+                base.OnKeyDown(e);
+            }
+        }
+
+        public void moveTo_tabItem_epg()
+        {
+            new BlackoutWindow(this).showWindow(this.tabItem_epg_Title.Text);
+            this.tabItem_epg.IsSelected = true;
+        }
+
+        public Button getSearchButton(bool isShowButton0)
+        {
+            Button button1 = buttonList["検索"];
+            if (Settings.Instance.ViewButtonList.Contains("検索") == false)
+            {
+                if (isShowButton0)
+                {
+                    stackPanel_button.Children.Add(button1);
+                }
+                else
+                {
+                    stackPanel_button.Children.Remove(button1);
+                }
+            }
+            return button1;
+        }
+
     }
 }

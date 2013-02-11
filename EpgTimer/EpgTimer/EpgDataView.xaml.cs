@@ -304,7 +304,7 @@ namespace EpgTimer
                     MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
                 }), null);
 
-            } 
+            }
             return true;
         }
 
@@ -382,10 +382,11 @@ namespace EpgTimer
             }
             catch (Exception ex)
             {
-                this.Dispatcher.BeginInvoke(new Action(() => {
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
                     MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
                 }), null);
-            } 
+            }
             return ret;
         }
 
@@ -400,11 +401,46 @@ namespace EpgTimer
                         RedrawEpg = false;
                     }
                 }
+                if (this.IsVisible)
+                {
+                    this.searchJumpTargetProgram();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
-            } 
+            }
         }
+
+        /// <summary>
+        /// 予約一覧からのジャンプ先を番組表タブから探す
+        /// </summary>
+        void searchJumpTargetProgram()
+        {
+            UInt64 serviceKey_Target1 = 0;
+            if (BlackoutWindow.selectedReserveItem != null)
+            {
+                ReserveData reserveData1 = BlackoutWindow.selectedReserveItem.ReserveInfo;
+                serviceKey_Target1 = CommonManager.Create64Key(reserveData1.OriginalNetworkID, reserveData1.TransportStreamID, reserveData1.ServiceID);
+            }
+            else if (BlackoutWindow.selectedSearchItem != null)
+            {
+                EpgEventInfo eventInfo1 = BlackoutWindow.selectedSearchItem.EventInfo;
+                serviceKey_Target1 = CommonManager.Create64Key(eventInfo1.original_network_id, eventInfo1.transport_stream_id, eventInfo1.service_id);
+            }
+            foreach (TabItem tabItem1 in this.tabControl.Items)
+            {
+                EpgDataViewItem epgView1 = tabItem1.Content as EpgDataViewItem;
+                foreach (UInt64 serviceKey_OnTab1 in epgView1.ViewInfo.ViewServiceList)
+                {
+                    if (serviceKey_Target1 == serviceKey_OnTab1)
+                    {
+                        tabItem1.IsSelected = true;
+                        return;
+                    }
+                }
+            }
+        }
+
     }
 }
