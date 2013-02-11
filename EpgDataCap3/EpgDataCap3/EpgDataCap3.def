@@ -1,0 +1,16 @@
+LIBRARY	"EpgDataCap3"
+
+EXPORTS
+	InitializeEP		@1
+	UnInitializeEP		@2
+	AddTSPacketEP		@3
+	GetTSIDEP			@4
+	GetEpgInfoListEP	@5
+	ClearSectionStatusEP	@6
+	GetSectionStatusEP	@7
+	GetServiceListActualEP	@8
+	GetServiceListEpgDBEP	@9
+	GetEpgInfoEP		@10
+	GetTimeDelayEP		@11
+	SearchEpgInfoEP		@12
+

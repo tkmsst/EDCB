@@ -1,0 +1,11 @@
+LIBRARY	"SendTSTCP"
+
+EXPORTS
+	InitializeDLL		@1
+	UnInitializeDLL		@2
+	AddSendAddrDLL		@3
+	ClearSendAddrDLL	@4
+	StartSendDLL		@5
+	StopSendDLL			@6
+	AddSendDataDLL		@7
+	ClearSendBuffDLL	@8

@@ -1,0 +1,529 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6B82030F-99FB-4D11-81E2-BAFD81A672BC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EpgTimer</RootNamespace>
+    <AssemblyName>EpgTimer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\..\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\EpgTimer_Bon_Vista_blue_rev2.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CtrlCmdCLI">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\$(Platform)\$(Configuration)\CtrlCmdCLI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationFramework.Classic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AddManualAutoAddWindow.xaml.cs">
+      <DependentUpon>AddManualAutoAddWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoAddView.xaml.cs">
+      <DependentUpon>AutoAddView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\CoopServerInfo.cs" />
+    <Compile Include="DefineClass\ListColumnInfo.cs" />
+    <Compile Include="SetCoopSrvWindow.xaml.cs">
+      <DependentUpon>SetCoopSrvWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ColorSetWindow.xaml.cs">
+      <DependentUpon>ColorSetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CmdStreamUtil.cs" />
+    <Compile Include="Common\EAAFileClass.cs" />
+    <Compile Include="Common\IEPGFileClass.cs" />
+    <Compile Include="Common\NWConnectClass.cs" />
+    <Compile Include="Common\ServiceCtrlClass.cs" />
+    <Compile Include="NotifyLogWindow.xaml.cs">
+      <DependentUpon>NotifyLogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\NotifySrvInfoItem.cs" />
+    <Compile Include="UserCtrlView\EpgAutoAddView.xaml.cs">
+      <DependentUpon>EpgAutoAddView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\ManualAutoAddDataItem.cs" />
+    <Compile Include="DefineClass\EpgAutoDataItem.cs" />
+    <Compile Include="DefineClass\EpgCaptime.cs" />
+    <Compile Include="UserCtrlView\ManualAutoAddView.xaml.cs">
+      <DependentUpon>ManualAutoAddView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecInfoDescWindow.xaml.cs">
+      <DependentUpon>RecInfoDescWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\RecInfoItem.cs" />
+    <Compile Include="RecInfoView.xaml.cs">
+      <DependentUpon>RecInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\ServiceItem2.cs" />
+    <Compile Include="DefineClass\ServiceViewItem.cs" />
+    <Compile Include="Setting\SetApp2DelWindow.xaml.cs">
+      <DependentUpon>SetApp2DelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetAppCancelWindow.xaml.cs">
+      <DependentUpon>SetAppCancelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetOtherAppView.xaml.cs">
+      <DependentUpon>SetOtherAppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\TunerInfo.cs" />
+    <Compile Include="Common\TVTestCtrlClass.cs" />
+    <Compile Include="DefineClass\TunerNameViewItem.cs" />
+    <Compile Include="SuspendCheckWindow.xaml.cs">
+      <DependentUpon>SuspendCheckWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TunerReserveViewCtrl\TunerReserveMainView.xaml.cs">
+      <DependentUpon>TunerReserveMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TunerReserveViewCtrl\TunerReserveNameView.xaml.cs">
+      <DependentUpon>TunerReserveNameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TunerReserveViewCtrl\TunerReservePanel.cs" />
+    <Compile Include="TunerReserveViewCtrl\TunerReserveTimeView.xaml.cs">
+      <DependentUpon>TunerReserveTimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TunerReserveViewCtrl\TunerReserveView.xaml.cs">
+      <DependentUpon>TunerReserveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\AddPresetWindow.xaml.cs">
+      <DependentUpon>AddPresetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddReserveEpgWindow.xaml.cs">
+      <DependentUpon>AddReserveEpgWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChgReserveWindow.xaml.cs">
+      <DependentUpon>ChgReserveWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonUtil.cs" />
+    <Compile Include="Common\PipeServer.cs" />
+    <Compile Include="Common\RecNamePluginClass.cs" />
+    <Compile Include="Common\WritePlugInClass.cs" />
+    <Compile Include="DefineClass\ColorSelectionItem.cs" />
+    <Compile Include="Common\ChSet5Class.cs" />
+    <Compile Include="Common\ColorDefClass.cs" />
+    <Compile Include="DefineClass\DateItem.cs" />
+    <Compile Include="DefineClass\IEPGStationInfo.cs" />
+    <Compile Include="DefineClass\PriorityInfo.cs" />
+    <Compile Include="DefineClass\RecModeInfo.cs" />
+    <Compile Include="DefineClass\YesNoInfo.cs" />
+    <Compile Include="DefineClass\TimePosInfo.cs" />
+    <Compile Include="EpgDataViewItem.xaml.cs">
+      <DependentUpon>EpgDataViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\EpgDataViewSetting.xaml.cs">
+      <DependentUpon>EpgDataViewSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\EpgDataViewSettingWindow.xaml.cs">
+      <DependentUpon>EpgDataViewSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgView\EpgListMainView.xaml.cs">
+      <DependentUpon>EpgListMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\SearchItem.cs" />
+    <Compile Include="DefineClass\ServiceItem.cs" />
+    <Compile Include="DefineClass\ReserveItem.cs" />
+    <Compile Include="DefineClass\RecPresetItem.cs" />
+    <Compile Include="DefineClass\ReserveViewItem.cs" />
+    <Compile Include="Common\TaskTrayClass.cs" />
+    <Compile Include="EpgView\WeekDayView.xaml.cs">
+      <DependentUpon>WeekDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgView\EpgWeekMainView.xaml.cs">
+      <DependentUpon>EpgWeekMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyWordWindow.xaml.cs">
+      <DependentUpon>KeyWordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetDefSearchSettingWindow.xaml.cs">
+      <DependentUpon>SetDefSearchSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\RecFolderWindow.xaml.cs">
+      <DependentUpon>RecFolderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetAppView.xaml.cs">
+      <DependentUpon>SetAppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetBasicView.xaml.cs">
+      <DependentUpon>SetBasicView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetDefRecSettingWindow.xaml.cs">
+      <DependentUpon>SetDefRecSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\RecSettingView.xaml.cs">
+      <DependentUpon>RecSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReserveView.xaml.cs">
+      <DependentUpon>ReserveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\SearchKeyView.xaml.cs">
+      <DependentUpon>SearchKeyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserCtrlView\SearchKeyDescView.xaml.cs">
+      <DependentUpon>SearchKeyDescView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SearchWindow.xaml.cs">
+      <DependentUpon>SearchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\SetEpgView.xaml.cs">
+      <DependentUpon>SetEpgView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DefineClass\TunerSelectInfo.cs" />
+    <Compile Include="DefineClass\ViewMenuItem.cs" />
+    <Page Include="AddManualAutoAddWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AutoAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetCoopSrvWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ColorSetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NotifyLogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\EpgAutoAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\ManualAutoAddView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecInfoDescWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\SetApp2DelWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Setting\SetAppCancelWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Setting\SetOtherAppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SuspendCheckWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TunerReserveViewCtrl\TunerReserveMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TunerReserveViewCtrl\TunerReserveNameView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TunerReserveViewCtrl\TunerReserveTimeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TunerReserveViewCtrl\TunerReserveView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserCtrlView\AddPresetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddReserveEpgWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChgReserveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgDataViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\EpgDataViewSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\EpgDataViewSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\EpgListMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\DateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\EpgMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\ProgramView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\ServiceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\TimeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\WeekDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EpgView\EpgWeekMainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="KeyWordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\CommonManagerClass.cs" />
+    <Compile Include="Common\DBManagerClass.cs" />
+    <Compile Include="Common\DefineEnum.cs" />
+    <Compile Include="Common\SettingClass.cs" />
+    <Compile Include="DefineClass\ComponentKindInfo.cs" />
+    <Compile Include="DefineClass\ContentKindInfo.cs" />
+    <Compile Include="DefineClass\DayOfWeekInfo.cs" />
+    <Compile Include="DefineClass\CustomEpgTabInfo.cs" />
+    <Compile Include="EpgView\DateView.xaml.cs">
+      <DependentUpon>DateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgView\EpgMainView.xaml.cs">
+      <DependentUpon>EpgMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgDataView.xaml.cs">
+      <DependentUpon>EpgDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgView\EpgViewPanel.cs" />
+    <Compile Include="EpgView\ProgramView.xaml.cs">
+      <DependentUpon>ProgramView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgView\ServiceView.xaml.cs">
+      <DependentUpon>ServiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EpgView\TimeView.xaml.cs">
+      <DependentUpon>TimeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Setting\SetDefSearchSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\RecFolderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\SetAppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\SetBasicView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\SetDefRecSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\RecSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReserveView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\SearchKeyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserCtrlView\SearchKeyDescView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SearchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\SetEpgView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DefineClass\ProgramViewItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EpgTimer_Bon_Vista_blue_rev2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EpgTimer_Bon_Vista_gray_rev2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EpgTimer_Bon_Vista_green_rev2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EpgTimer_Bon_Vista_red_rev2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TaskIconBlue.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TaskIconGray.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TaskIconGreen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TaskIconRed.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\key.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\key_no.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
