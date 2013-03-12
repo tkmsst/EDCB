@@ -1075,6 +1075,28 @@ namespace EpgTimer
             set { _instance = value; }
         }
 
+        //番組表のデフォルトの背景色
+        private static void DefaultcontentColorList()
+        {
+            Instance.contentColorList.Add("LightYellow");
+            Instance.contentColorList.Add("Lavender");
+            Instance.contentColorList.Add("LavenderBlush");
+            Instance.contentColorList.Add("MistyRose");
+            Instance.contentColorList.Add("Honeydew");
+            Instance.contentColorList.Add("LightCyan");
+            Instance.contentColorList.Add("PapayaWhip");
+            Instance.contentColorList.Add("Pink");
+            Instance.contentColorList.Add("LightYellow");
+            Instance.contentColorList.Add("PapayaWhip");
+            Instance.contentColorList.Add("AliceBlue");
+            Instance.contentColorList.Add("AliceBlue");
+            Instance.contentColorList.Add("White");
+            Instance.contentColorList.Add("White");
+            Instance.contentColorList.Add("White");
+            Instance.contentColorList.Add("WhiteSmoke");
+            Instance.contentColorList.Add("White");
+        }
+
         /// <summary>
         /// EpgTimer用設定ファイルロード関数
         /// </summary>
@@ -1138,23 +1160,7 @@ namespace EpgTimer
             {
                 if (Instance.contentColorList.Count == 0)
                 {
-                    Instance.contentColorList.Add("News");
-                    Instance.contentColorList.Add("Sports");
-                    Instance.contentColorList.Add("Information");
-                    Instance.contentColorList.Add("Drama");
-                    Instance.contentColorList.Add("Music");
-                    Instance.contentColorList.Add("Variety");
-                    Instance.contentColorList.Add("Movie");
-                    Instance.contentColorList.Add("Anime");
-                    Instance.contentColorList.Add("Documentary");
-                    Instance.contentColorList.Add("Theater");
-                    Instance.contentColorList.Add("Education");
-                    Instance.contentColorList.Add("Welfare");
-                    Instance.contentColorList.Add("White");
-                    Instance.contentColorList.Add("White");
-                    Instance.contentColorList.Add("White");
-                    Instance.contentColorList.Add("Other");
-                    Instance.contentColorList.Add("White");
+                    DefaultcontentColorList();
                 }
                 else if (Instance.contentColorList.Count == 0x10)
                 {
@@ -1295,10 +1301,7 @@ namespace EpgTimer
             {
                 if (Instance.contentColorList.Count == 0)
                 {
-                    for (int i = 0; i < 0x11; i++)
-                    {
-                        Instance.contentColorList.Add("White");
-                    }
+                    DefaultcontentColorList();
                 }
                 else if (Instance.contentColorList.Count == 0x10)
                 {
