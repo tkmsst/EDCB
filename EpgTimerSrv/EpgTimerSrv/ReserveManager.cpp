@@ -3149,8 +3149,8 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 
 		//自動削除の確認
 		if( sys->autoDel == TRUE ){
-			countTuijyuChk++;
-			if( countTuijyuChk > 10 ){
+			countAutoDelChk++;
+			if( countAutoDelChk > 10 ){
 				if( sys->Lock(L"BankCheckThread5") == TRUE){
 					CCheckRecFile chkFile;
 					chkFile.SetCheckFolder(&sys->delFolderList);
@@ -3161,9 +3161,9 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 					sys->recInfoText.GetProtectFiles(&protectFile);
 					chkFile.CheckFreeSpace(&sys->reserveInfoMap, defRecPath, &protectFile);
 					sys->UnLock();
+					countAutoDelChk = 0;
 				}
 			}
-			countAutoDelChk = 0;
 		}
 
 		//EPG取得時間の確認

@@ -128,59 +128,6 @@ void CCheckRecFile::CheckFreeSpace(map<DWORD, CReserveInfo*>* chkReserve, wstrin
 		}
 	}
 
-	map<wstring, ULONGLONG>::iterator itr;
-	for( itr = checkMap.begin(); itr != checkMap.end(); itr++ ){
-		if( itr->second > 0 ){
-			ULARGE_INTEGER freeBytesAvailable;
-			ULARGE_INTEGER totalNumberOfBytes;
-			ULARGE_INTEGER totalNumberOfFreeBytes;
-			if( _GetDiskFreeSpaceEx(itr->first.c_str(), &freeBytesAvailable, &totalNumberOfBytes, &totalNumberOfFreeBytes ) == TRUE ){
-				ULONGLONG free = freeBytesAvailable.QuadPart;
-				if( free > itr->second ){
-					continue;
-				}
-				map<LONGLONG, TS_FILE_INFO> tsFileList;
-				FindTsFileList(itr->first, &tsFileList);
-				while( free < itr->second ){
-					map<LONGLONG, TS_FILE_INFO>::iterator itrTS;
-					itrTS = tsFileList.begin();
-					if( itrTS != tsFileList.end() ){
-						BOOL noDel = FALSE;
-						map<wstring, wstring>::iterator itrP;
-						itrP = protectFile->find(itrTS->second.filePath);
-						if( itrP != protectFile->end() ){
-							noDel = TRUE;
-						}
-						if( noDel == FALSE ){
-							DeleteFile( itrTS->second.filePath.c_str() );
-
-							_OutputDebugString(L"★Auto Delete : %s", itrTS->second.filePath.c_str());
-							for( size_t i=0 ; i<this->delExt.size(); i++ ){
-								wstring delFile = L"";
-								wstring delFileName = L"";
-								GetFileFolder(itrTS->second.filePath, delFile);
-								GetFileTitle(itrTS->second.filePath, delFileName);
-								delFile += L"\\";
-								delFile += delFileName;
-								delFile += this->delExt[i];
-
-								DeleteFile( delFile.c_str() );
-								_OutputDebugString(L"★Auto Delete : %s", delFile.c_str());
-							}
-
-							free += itrTS->second.fileSize;
-						}else{
-							_OutputDebugString(L"★No Delete(Protected) : %s", itrTS->second.filePath.c_str());
-						}
-						tsFileList.erase(itrTS);
-					}else{
-						break;
-					}
-				}
-			}
-		}
-	}
-
 	//ドライブレベルでのチェック
 	map<wstring, MOUNT_PATH_INFO>::iterator itrMount;
 	for( itrMount = mountMap.begin(); itrMount != mountMap.end(); itrMount++ ){
@@ -325,37 +272,27 @@ void CCheckRecFile::FindTsFileList(wstring findFolder, map<LONGLONG, TS_FILE_INF
 		return ;
 	}
 	do{
-		if( (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ){
-			//本当に拡張子DLL?
-			if( IsExt(findData.cFileName, L".ts") == TRUE ){
-				TS_FILE_INFO item;
-
-				Format(item.filePath, L"%s\\%s", findFolder.c_str(), findData.cFileName);
-				transform(item.filePath.begin(), item.filePath.end(), item.filePath.begin(), toupper);
-
-				HANDLE file = _CreateFile( item.filePath.c_str(), GENERIC_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
-				if( file != INVALID_HANDLE_VALUE ){
-					FILETIME CreationTime;
-					FILETIME LastAccessTime;
-					FILETIME LastWriteTime;
-					GetFileTime(file, &CreationTime, &LastAccessTime, &LastWriteTime);
-
-					item.fileTime = ((LONGLONG)CreationTime.dwHighDateTime)<<32 | (LONGLONG)CreationTime.dwLowDateTime;
-
-					DWORD sizeH=0;
-					DWORD sizeL=0;
-					sizeL = GetFileSize(file,&sizeH);
-
-					item.fileSize = ((LONGLONG)sizeH)<<32 | (LONGLONG)sizeL;
-
-					CloseHandle(file);
-
-					findList->insert(pair<LONGLONG, TS_FILE_INFO>(item.fileTime, item));
-				}
-			}
+		if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0) {
+			// ディレクトリは対象外
+			continue;
 		}
+
+		if (IsExt(findData.cFileName, L".ts") != TRUE) {
+			// 拡張子 TS でなければ対象外
+			continue;
+		}
+		
+		TS_FILE_INFO item;
+
+		Format(item.filePath, L"%s\\%s", findFolder.c_str(), findData.cFileName);
+		transform(item.filePath.begin(), item.filePath.end(), item.filePath.begin(), toupper);
+		
+		item.fileTime = ((LONGLONG)(findData.ftCreationTime.dwHighDateTime))<<32 | findData.ftCreationTime.dwLowDateTime;
+		item.fileSize = ((LONGLONG)(findData.nFileSizeHigh))<<32 | findData.nFileSizeLow;
+
+		findList->insert(pair<LONGLONG, TS_FILE_INFO>(item.fileTime, item));
+		
 	}while(FindNextFile(find, &findData));
 
 	FindClose(find);
-
 }
