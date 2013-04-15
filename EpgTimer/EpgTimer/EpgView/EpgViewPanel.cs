@@ -17,7 +17,7 @@ namespace EpgTimer.EpgView
         public static readonly DependencyProperty BackgroundProperty =
             Panel.BackgroundProperty.AddOwner(typeof(EpgViewPanel));
         private List<ProgramViewItem> items;
-        private List<TextDrawItem> textDrawList = new List<TextDrawItem>();
+        private Dictionary<ProgramViewItem, List<TextDrawItem>> textDrawDict = new Dictionary<ProgramViewItem, List<TextDrawItem>>();
         public Brush Background
         {
             set { SetValue(BackgroundProperty, value); }
@@ -46,9 +46,9 @@ namespace EpgTimer.EpgView
 
         protected void CreateDrawTextList()
         {
-            textDrawList.Clear();
-            textDrawList = null;
-            textDrawList = new List<TextDrawItem>();
+            textDrawDict.Clear();
+            textDrawDict = null;
+            textDrawDict = new Dictionary<ProgramViewItem, List<TextDrawItem>>();
             Matrix m = PresentationSource.FromVisual(Application.Current.MainWindow).CompositionTarget.TransformToDevice;
 
             this.VisualTextRenderingMode = TextRenderingMode.ClearType;
@@ -134,15 +134,10 @@ namespace EpgTimer.EpgView
                 double sizeTitle = Settings.Instance.FontSizeTitle;
                 foreach (ProgramViewItem info in Items)
                 {
+                    List<TextDrawItem> textDrawList = new List<TextDrawItem>();
+                    textDrawDict[info] = textDrawList;
                     if (info.Height > 2)
                     {
-                        if (info.Height < sizeTitle + 3)
-                        {
-                            //高さ足りない
-                            info.TitleDrawErr = true;
-                            continue;
-                        }
-
                         double totalHeight = -2;
 
                         //分
@@ -214,11 +209,6 @@ namespace EpgTimer.EpgView
 
         protected bool RenderText(String text, ref List<TextDrawItem> textDrawList, GlyphTypeface glyphType, double fontSize, double maxWidth, double maxHeight, double x, double y, ref double useHeight, SolidColorBrush fontColor, Matrix m)
         {
-            if (maxHeight < fontSize + 2)
-            {
-                useHeight = 0;
-                return false;
-            }
             double totalHeight = 0;
 
             string[] lineText = text.Replace("\r", "").Split('\n');
@@ -234,7 +224,7 @@ namespace EpgTimer.EpgView
                     double width = glyphType.AdvanceWidths[glyphIndex] * fontSize;
                     if (totalWidth + width > maxWidth)
                     {
-                        if (totalHeight + fontSize > maxHeight)
+                        if (totalHeight > maxHeight)
                         {
                             //次の行無理
 //                            glyphIndex = glyphType.CharacterToGlyphMap['…'];
@@ -292,14 +282,6 @@ namespace EpgTimer.EpgView
                     textDrawList.Add(item);
 
                 }
-                //高さ確認
-                if (totalHeight + fontSize > maxHeight)
-                {
-                    //これ以上は無理
-                    useHeight = totalHeight;
-                    return false;
-                }
-
             }
             useHeight = Math.Floor(totalHeight);
             return true;
@@ -327,11 +309,16 @@ namespace EpgTimer.EpgView
                     if (info.Height > 2)
                     {
                         dc.DrawRectangle(info.ContentColor, null, new Rect(info.LeftPos + 0, info.TopPos + 1, info.Width - 1, info.Height - 1));
+                        if (textDrawDict.ContainsKey(info))
+                        {
+                            dc.PushClip(new RectangleGeometry(new Rect(info.LeftPos + 1, info.TopPos + 1, info.Width - 2, info.Height - 2)));
+                            foreach (TextDrawItem txtinfo in textDrawDict[info])
+                            {
+                                dc.DrawGlyphRun(txtinfo.FontColor, txtinfo.Text);
+                            }
+                            dc.Pop();
+                        }
                     }
-                }
-                foreach (TextDrawItem info in textDrawList)
-                {
-                    dc.DrawGlyphRun(info.FontColor, info.Text);
                 }
             }
             catch (Exception ex)

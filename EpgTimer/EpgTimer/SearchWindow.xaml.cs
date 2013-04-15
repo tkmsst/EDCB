@@ -728,5 +728,27 @@ namespace EpgTimer
             }
         }
 
+        private void MenuItem_Click_Research(object sender, RoutedEventArgs e)
+        {
+            if (listView_result.SelectedItem != null)
+            {
+                SearchItem item = listView_result.SelectedItem as SearchItem;
+                EpgSearchKeyInfo defKey = new EpgSearchKeyInfo();
+                defKey.andKey = item.EventName;
+                defKey.serviceList.Clear();
+
+                foreach (ServiceItem info in searchKeyView.searchKeyDescView.listView_service.Items)
+                {
+                    if (info.ServiceName.Equals(item.ServiceName))
+                    {
+                        defKey.serviceList.Add((long)info.ID);
+                    }
+                }
+                searchKeyView.SetSearchKey(defKey);
+
+                button_search_Click(sender, e);
+            }
+        }
+
     }
 }

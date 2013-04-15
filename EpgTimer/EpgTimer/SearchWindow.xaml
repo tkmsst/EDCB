@@ -34,6 +34,7 @@
             <ListView.Resources>
                 <ContextMenu x:Key="itemMenu" x:Name="cmdMenu" >
                     <MenuItem Header="ダイアログ表示 (_O)" Click="MenuItem_Click_ShowDialog"  InputGestureText="Enter" />
+                    <MenuItem Header="番組名で再検索" Click="MenuItem_Click_Research" />
                     <MenuItem Header="予約←→無効 (_R)" Click="MenuItem_Click_ChangeRecMode"  InputGestureText="BackSpace" />
                     <MenuItem Header="番組詳細 (_B)" Click="MenuItem_Click_ProgramDetail" />
                     <MenuItem  x:Name="MenuItem_Google" Header="番組名でググる (_G)" Click="MenuItem_Click_Google" InputGestureText="F2" />

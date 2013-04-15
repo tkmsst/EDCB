@@ -216,7 +216,7 @@ BOOL CParseEpgAutoAddText::Parse1Line(string parseLine, EPG_AUTO_ADD_DATA* item 
 			__int64 i64Ch=0;
 			CHAR *endstr;
 			i64Ch = ((__int64)strtol(strH.c_str(), &endstr, 16))<<32 |
-				((__int64)strtol(strL.c_str(), &endstr, 16));
+				((__int64)strtoul(strL.c_str(), &endstr, 16));
 
 			item->searchInfo.serviceList.push_back(i64Ch);
 		}
@@ -229,7 +229,7 @@ BOOL CParseEpgAutoAddText::Parse1Line(string parseLine, EPG_AUTO_ADD_DATA* item 
 		__int64 i64Ch=0;
 		CHAR *endstr;
 		i64Ch = ((__int64)strtol(strH.c_str(), &endstr, 16))<<32 |
-			((__int64)strtol(strL.c_str(), &endstr, 16));
+			((__int64)strtoul(strL.c_str(), &endstr, 16));
 
 		item->searchInfo.serviceList.push_back(i64Ch);
 	}

@@ -3149,8 +3149,8 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 
 		//自動削除の確認
 		if( sys->autoDel == TRUE ){
-			countTuijyuChk++;
-			if( countTuijyuChk > 10 ){
+			countAutoDelChk++;
+			if( countAutoDelChk > 10 ){
 				if( sys->Lock(L"BankCheckThread5") == TRUE){
 					CCheckRecFile chkFile;
 					chkFile.SetCheckFolder(&sys->delFolderList);
@@ -3161,9 +3161,9 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 					sys->recInfoText.GetProtectFiles(&protectFile);
 					chkFile.CheckFreeSpace(&sys->reserveInfoMap, defRecPath, &protectFile);
 					sys->UnLock();
+					countAutoDelChk = 0;
 				}
 			}
-			countAutoDelChk = 0;
 		}
 
 		//EPG取得時間の確認
@@ -3213,29 +3213,25 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 					sendPreEpgCap = TRUE;
 				}
 				if( GetNowI64Time() > capTime && sys->_IsEpgCap() == FALSE){
-
 					//開始時間過ぎたので開始
 					wstring iniCommonPath = L"";
 					GetCommonIniPath(iniCommonPath);
-
-					if(GetPrivateProfileInt(L"SET", L"EnableEPGTimerType", 0, iniCommonPath.c_str())==1){
-						if(swBasicOnly){
-							// 基本情報のみ取得に変更
-							sys->BSOnly = true;
-							sys->CS1Only = true;
-							sys->CS2Only = true;
-							WritePrivateProfileString(L"SET",L"BSBasicOnly",L"1",iniCommonPath.c_str());
-							WritePrivateProfileString(L"SET",L"CS1BasicOnly",L"1",iniCommonPath.c_str());
-							WritePrivateProfileString(L"SET",L"CS2BasicOnly",L"1",iniCommonPath.c_str());
-						} else {
-							// 基本情報以外も取得に変更
-							sys->BSOnly = false;
-							sys->CS1Only = false;
-							sys->CS2Only = false;
-							WritePrivateProfileString(L"SET",L"BSBasicOnly",L"0",iniCommonPath.c_str());
-							WritePrivateProfileString(L"SET",L"CS1BasicOnly",L"0",iniCommonPath.c_str());
-							WritePrivateProfileString(L"SET",L"CS2BasicOnly",L"0",iniCommonPath.c_str());
-						}
+					if(swBasicOnly){
+						// 基本情報のみ取得に変更
+						sys->BSOnly = true;
+						sys->CS1Only = true;
+						sys->CS2Only = true;
+						WritePrivateProfileString(L"SET",L"BSBasicOnly",L"1",iniCommonPath.c_str());
+						WritePrivateProfileString(L"SET",L"CS1BasicOnly",L"1",iniCommonPath.c_str());
+						WritePrivateProfileString(L"SET",L"CS2BasicOnly",L"1",iniCommonPath.c_str());
+					} else {
+						// 基本情報以外も取得に変更
+						sys->BSOnly = false;
+						sys->CS1Only = false;
+						sys->CS2Only = false;
+						WritePrivateProfileString(L"SET",L"BSBasicOnly",L"0",iniCommonPath.c_str());
+						WritePrivateProfileString(L"SET",L"CS1BasicOnly",L"0",iniCommonPath.c_str());
+						WritePrivateProfileString(L"SET",L"CS2BasicOnly",L"0",iniCommonPath.c_str());
 					}
 					sys->_StartEpgCap();
 				}
