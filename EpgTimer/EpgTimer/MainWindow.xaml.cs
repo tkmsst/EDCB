@@ -688,6 +688,16 @@ namespace EpgTimer
 
         void searchButton_Click(object sender, RoutedEventArgs e)
         {
+            // Hide()したSearchWindowを復帰
+            foreach (Window win1 in this.OwnedWindows)
+            {
+                if (win1.GetType() == typeof(SearchWindow))
+                {
+                    win1.Show();
+                    return;
+                }
+            }
+            //
             SearchCmd();
         }
 
