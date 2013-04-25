@@ -571,8 +571,8 @@ BOOL CDecodeUtil::CheckSDT(WORD PID, CSDTTable* sdt)
 			sdtOtherMap.insert(pair<DWORD, SDT_SECTION_INFO*>(key, info));
 		}else{
 			if( itr->second->version_number != sdt->version_number ){
-				sdtOtherMap.erase(itr);
 				SAFE_DELETE(itr->second);
+				sdtOtherMap.erase(itr);
 
 				SDT_SECTION_INFO* info = new SDT_SECTION_INFO;
 				info->original_network_id = sdt->original_network_id;
