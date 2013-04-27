@@ -138,6 +138,12 @@ namespace EpgTimer.EpgView
                     textDrawDict[info] = textDrawList;
                     if (info.Height > 2)
                     {
+                        if (info.Height < sizeTitle + 3)
+                        {
+                            //高さ足りない
+                            info.TitleDrawErr = true;
+                        }
+
                         double totalHeight = -2;
 
                         //分
