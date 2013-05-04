@@ -78,16 +78,18 @@ namespace EpgTimer.EpgView
                     wkPrev = info;
                 }
 
+                double minimum = (Settings.Instance.FontSizeTitle + 2) * Settings.Instance.MinimumHeight;
+
                 foreach (ProgramViewItem info in Items)
                 {
                     // 最低表示dot数よりも小さければ
-                    if (info.Height < Settings.Instance.MinimumHeight)
+                    if (info.Height < minimum)
                     {
-                        double wk = Settings.Instance.MinimumHeight - info.Height;    // 調整幅
+                        double wk = minimum - info.Height;    // 調整幅
                         ProgramViewItem pr = info.prevItem;
                         if (pr != null)                             // 先頭ならやりようがない
                         {
-                            while (pr.Height < Settings.Instance.MinimumHeight + wk)      // 調整できるだけの高さが無ければ
+                            while (pr.Height < minimum + wk)      // 調整できるだけの高さが無ければ
                             {
                                 if (pr.prevTop == 0)
                                 {
@@ -113,7 +115,7 @@ namespace EpgTimer.EpgView
                                     info.prevTop = info.TopPos;
                                 }
                                 info.TopPos -= wk;      //  先頭位置をずらす
-                                info.Height = Settings.Instance.MinimumHeight;    //  最低表示dot数
+                                info.Height = minimum;    //  最低表示dot数
                             }
                         }
                     }
