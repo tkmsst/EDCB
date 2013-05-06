@@ -1384,7 +1384,7 @@ namespace EpgTimer
                     Instance.autoAddManualColumn.Add(new ListColumnInfo("RecMode", double.NaN));
                     Instance.autoAddManualColumn.Add(new ListColumnInfo("Priority", double.NaN));
                 }
-                Instance.nwTvMode = true;
+                //Instance.nwTvMode = true;
             }
         }
 
