@@ -65,6 +65,7 @@ namespace EpgTimer.EpgView
                 Items.Sort(Compare);
                 // 前番組へのリンク
                 ProgramViewItem wkPrev = null;
+                String wkPrevDate = "";
                 foreach (ProgramViewItem info in Items)
                 {
                     if (wkPrev != null)
@@ -73,9 +74,14 @@ namespace EpgTimer.EpgView
                         {   //  サービスIDが変わる => 局が変わる => その局の一番先頭の番組
                             wkPrev = null;
                         }
+                        if (!wkPrevDate.Equals(info.EventInfo.start_time.AddHours(-4).ToShortDateString()))
+                        {   //  1週間モード時、先頭は4時に切り替わる＝4時間前に日付が変わるタイミング
+                            wkPrev = null;
+                        }
                     }
                     info.prevItem = wkPrev;
                     wkPrev = info;
+                    wkPrevDate = info.EventInfo.start_time.AddHours(-4).ToShortDateString();
                 }
 
                 double minimum = (Settings.Instance.FontSizeTitle + 2) * Settings.Instance.MinimumHeight;
@@ -95,7 +101,13 @@ namespace EpgTimer.EpgView
                                 {
                                     pr.prevTop = pr.TopPos;
                                 }
-                                pr.TopPos -= wk;    // 先頭位置のみ更新
+
+                                // 番組表先頭が欠けないための処理
+                                //if (pr.Height >= minimum && pr.prevItem != null)
+                                if (pr.Height >= minimum)
+                                {
+                                    pr.TopPos -= wk;    // 先頭位置のみ更新
+                                }
                                 pr = pr.prevItem;
                                 if (pr == null)
                                 {
@@ -114,9 +126,9 @@ namespace EpgTimer.EpgView
                                 {
                                     info.prevTop = info.TopPos;
                                 }
-                                info.TopPos -= wk;      //  先頭位置をずらす
-                                info.Height = minimum;    //  最低表示dot数
                             }
+                            info.TopPos -= wk;      //  先頭位置をずらす
+                            info.Height = minimum;    //  最低表示dot数
                         }
                     }
                 }
@@ -391,7 +403,7 @@ namespace EpgTimer.EpgView
             }
         }
 
-        // サービスID/TopPos 順にソート
+        // サービスID/開始日付/TopPos 順にソート
         public static int Compare(ProgramViewItem x, ProgramViewItem y)
         {
             //nullが最も小さいとする
@@ -418,17 +430,30 @@ namespace EpgTimer.EpgView
             }
             else
             {
-                if (x.TopPos < y.TopPos)
+                if (x.EventInfo.start_time < y.EventInfo.start_time)
                 {
                     return -1;
                 }
-                else if (x.TopPos > y.TopPos)
+                else if (x.EventInfo.start_time > y.EventInfo.start_time)
                 {
                     return 1;
                 }
                 else
                 {
                     return 0;
+                    //// 不必要？
+                    //if (x.TopPos < y.TopPos)
+                    //{
+                    //    return -1;
+                    //}
+                    //else if (x.TopPos > y.TopPos)
+                    //{
+                    //    return 1;
+                    //}
+                    //else
+                    //{
+                    //    return 0;
+                    //}
                 }
             }
         }

@@ -57,10 +57,10 @@
                             <TextBox Height="24" HorizontalAlignment="Left" Margin="165,6,0,0" Name="textBox_mouse_scroll" VerticalAlignment="Top" Width="55" />
                             <Label Content="サービス１つの幅" Height="28" HorizontalAlignment="Left" Margin="11,36,0,0" Name="label8" VerticalAlignment="Top" />
                             <TextBox Height="24" HorizontalAlignment="Left" Margin="165,36,0,0" Name="textBox_service_width" VerticalAlignment="Top" Width="55" />
-                            <Label Content="1分あたりの高さ" Height="28" HorizontalAlignment="Left" Margin="357,6,0,0" Name="label9" VerticalAlignment="Top" />
-                            <TextBox Height="24" HorizontalAlignment="Left" Margin="475,8,0,0" Name="textBox_minHeight" VerticalAlignment="Top" Width="55" />
-                            <Label Content="ドラッグスクロール倍率" Height="28" HorizontalAlignment="Left" Margin="357,36,0,0" Name="label10" VerticalAlignment="Top" />
-                            <TextBox Height="24" HorizontalAlignment="Left" Margin="475,38,0,0" Name="textBox_dragScroll" VerticalAlignment="Top" Width="55" />
+                            <Label Content="1分あたりの高さ" Height="28" HorizontalAlignment="Left" Margin="327,6,0,0" Name="label9" VerticalAlignment="Top" />
+                            <TextBox Height="24" HorizontalAlignment="Left" Margin="470,8,0,0" Name="textBox_minHeight" VerticalAlignment="Top" Width="55" />
+                            <Label Content="ドラッグスクロール倍率" Height="28" HorizontalAlignment="Left" Margin="327,36,0,0" Name="label10" VerticalAlignment="Top" />
+                            <TextBox Height="24" HorizontalAlignment="Left" Margin="470,38,0,0" Name="textBox_dragScroll" VerticalAlignment="Top" Width="55" />
                             <CheckBox Content="番組詳細をツールチップで表示する" Height="16" HorizontalAlignment="Left" Margin="17,70,0,0" Name="checkBox_descToolTip" VerticalAlignment="Top" />
                             <CheckBox Content="番組内容表示位置を番組名表示位置にあわせる" Height="16" HorizontalAlignment="Left" Margin="357,70,0,0" Name="checkBox_title_indent" VerticalAlignment="Top" />
                             <CheckBox Content="番組名を表示しきれない物のみ表示する" Height="16" HorizontalAlignment="Left" Margin="34,92,0,0" Name="checkBox_toolTip_noView_only" VerticalAlignment="Top" />
