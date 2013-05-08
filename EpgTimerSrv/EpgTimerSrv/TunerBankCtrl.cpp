@@ -653,6 +653,9 @@ BOOL CTunerBankCtrl::IsNeedOpenTuner(multimap<LONGLONG, RESERVE_WORK*>* sortList
 		ret =  TRUE;
 		BYTE recMode=0;
 		itr->second->reserveInfo->GetRecMode(&recMode);
+		if( recMode == RECMODE_VIEW ){
+			*viewMode = TRUE;
+		}
 		itr->second->reserveInfo->GetService(&(initCh->ONID), &(initCh->TSID), &(initCh->SID) );
 		initCh->useSID = TRUE;
 		initCh->useBonCh = FALSE;
@@ -664,10 +667,6 @@ BOOL CTunerBankCtrl::IsNeedOpenTuner(multimap<LONGLONG, RESERVE_WORK*>* sortList
 		RESERVE_DATA data;
 		itr->second->reserveInfo->GetData(&data);
 
-		//—Dæ“x5‚Ì‚Æ‚«˜^‰æ‚ÆŽ‹’®‚ð“¯Žž‚És‚¤‚½‚ß‚Ì‰ü‘¢
-		if( recMode == RECMODE_VIEW || data.recSetting.priority == 5 ){
-			*viewMode = TRUE;
-		}
 		if( data.recSetting.recFolderList.size() == 0 ){
 			searchKey = this->recFolderPath;
 		}else{
@@ -1563,13 +1562,6 @@ BOOL CTunerBankCtrl::RecStart(LONGLONG nowTime, RESERVE_WORK* reserve, BOOL send
 		return TRUE;
 	}
 
-	//—Dæ“x5‚Ì‚Æ‚«˜^‰æ‚ÆŽ‹’®‚ð“¯Žž‚És‚¤‚½‚ß‚Ì‰ü‘¢
-	if( data.recSetting.priority == 5){
-		this->sendCtrl.SendViewSetStandbyRec(2);
-		if( this->recView == TRUE ){
-			this->sendCtrl.SendViewExecViewApp();
-		}
-	}
 	for( size_t i=0; i<reserve->ctrlID.size(); i++ ){
 		SET_CTRL_REC_PARAM param;
 		param.ctrlID = reserve->ctrlID[i];
