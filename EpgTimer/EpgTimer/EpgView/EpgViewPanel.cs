@@ -239,7 +239,7 @@ namespace EpgTimer.EpgView
                             continue;
                         }
 
-                        double widthOffset = sizeNormal * 1.5;
+                        double widthOffset = sizeNormal * 1.7;
                         //番組情報
                         if (info.EventInfo.ShortInfo != null)
                         {
@@ -260,7 +260,7 @@ namespace EpgTimer.EpgView
                             //説明
                             if (info.EventInfo.ShortInfo.text_char.Length > 0)
                             {
-                                if (RenderText(info.EventInfo.ShortInfo.text_char, ref textDrawList, glyphTypefaceNormal, sizeNormal, info.Width - 6 - widthOffset, info.Height - 6 - totalHeight, info.LeftPos + widthOffset, info.TopPos + totalHeight, ref useHeight, CommonManager.Instance.CustTitle2Color, m) == false)
+                                if (RenderText(info.EventInfo.ShortInfo.text_char, ref textDrawList, glyphTypefaceNormal, sizeNormal, info.Width - 10 - widthOffset, info.Height - 5 - totalHeight, info.LeftPos + widthOffset, info.TopPos + totalHeight, ref useHeight, CommonManager.Instance.CustTitle2Color, m) == false)
                                 {
                                     continue;
                                 }
@@ -387,13 +387,13 @@ namespace EpgTimer.EpgView
                 double sizeTitle = Settings.Instance.FontSizeTitle;
                 foreach (ProgramViewItem info in Items)
                 {
-                    dc.DrawRectangle(Brushes.Gray, null, new Rect(info.LeftPos, info.TopPos, info.Width, info.Height));
+                    dc.DrawRectangle(Brushes.DarkGray, null, new Rect(info.LeftPos, info.TopPos, info.Width, info.Height));
                     if (info.Height > 2)
                     {
-                        dc.DrawRectangle(info.ContentColor, null, new Rect(info.LeftPos + 0, info.TopPos + 0.5, info.Width - 0.5, info.Height - 0.5));
+                        dc.DrawRectangle(info.ContentColor, null, new Rect(info.LeftPos + 0, info.TopPos + 0.5, info.Width - 1, info.Height - 0.5));
                         if (textDrawDict.ContainsKey(info))
                         {
-                            dc.PushClip(new RectangleGeometry(new Rect(info.LeftPos + 1, info.TopPos + 1, info.Width - 2, info.Height - 2)));
+                            dc.PushClip(new RectangleGeometry(new Rect(info.LeftPos + 0, info.TopPos + 0.5, info.Width - 1, info.Height - 0.5)));
                             foreach (TextDrawItem txtinfo in textDrawDict[info])
                             {
                                 dc.DrawGlyphRun(txtinfo.FontColor, txtinfo.Text);
