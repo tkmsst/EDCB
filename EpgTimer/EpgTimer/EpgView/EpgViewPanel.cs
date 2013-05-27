@@ -91,44 +91,32 @@ namespace EpgTimer.EpgView
                     // 最低表示dot数よりも小さければ
                     if (info.Height < minimum)
                     {
-                        double wk = minimum - info.Height;    // 調整幅
+                        double wk1 = minimum - info.Height;                            // 調整幅(Total)
+                        double wk2 = 0;                                                // 調整可能幅
+                        double wk3 = wk1;                                              // 調整後の要再調整幅
                         ProgramViewItem pr = info.prevItem;
-                        if (pr != null)                             // 先頭ならやりようがない
-                        {
-                            while (pr.Height < minimum + wk)      // 調整できるだけの高さが無ければ
-                            {
-                                if (pr.prevTop == 0)
-                                {
-                                    pr.prevTop = pr.TopPos;
-                                }
+                        if (pr != null) {                                              // 先頭ならやりようがない
+                            while (pr.Height < minimum + wk3) {                        // 調整できるだけの十分な高さが無い
+                                wk2 = pr.Height - minimum;                             // 無理にでも調整可能な幅を求める
+                                if (wk2 > 0) {} else { wk2 = 0; }                      // 念の為マイナスを排除
+                                wk3 = wk3 - wk2;                                       // 調整後の要再調整幅
 
-                                // 番組表先頭が欠けないための処理
-                                //if (pr.Height >= minimum && pr.prevItem != null)
-                                if (pr.Height >= minimum)
-                                {
-                                    pr.TopPos -= wk;    // 先頭位置のみ更新
-                                }
-                                pr = pr.prevItem;
-                                if (pr == null)
-                                {
-                                    break;
-                                }
+                                if (  pr.prevTop == 0) {   pr.prevTop =   pr.TopPos; }
+                                pr.Height -= wk2;                                      // 高さと
+                                if (pr.Height >= minimum) { pr.TopPos -= wk3; }        // 開始位置 の調整
+
+                                pr = pr.prevItem;                                      // 次(前)
+                                if (pr == null) { break; }                             // が無い？なら終わり
                             }
 
-                            if (pr != null)
-                            {
-                                if (pr.prevTop == 0)
-                                {
-                                    pr.prevTop = pr.TopPos;
-                                }
-                                pr.Height -= wk;        //  高さと
-                                if (info.prevTop == 0)
-                                {
-                                    info.prevTop = info.TopPos;
-                                }
+                            if (pr != null) {
+                                if (  pr.prevTop == 0) {   pr.prevTop =   pr.TopPos; }
+                                pr.Height -= wk3;                                      //  高さと
+                                if (info.prevTop == 0) { info.prevTop = info.TopPos; }
                             }
-                            info.TopPos -= wk;      //  先頭位置をずらす
-                            info.Height = minimum;    //  最低表示dot数
+
+                            info.TopPos -= wk1;                                        //  開始位置 の調整
+                            info.Height  = minimum;                                    //  最低表示dot数
                         }
                     }
                 }
