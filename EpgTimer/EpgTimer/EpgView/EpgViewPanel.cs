@@ -130,6 +130,11 @@ namespace EpgTimer.EpgView
                             info.TopPos -= wk;      //  先頭位置をずらす
                             info.Height = minimum;    //  最低表示dot数
                         }
+                        else
+                        {
+                            info.TopPos -= wk;      //  先頭位置をずらす
+                            info.Height = minimum;    //  最低表示dot数
+                        }
                     }
                 }
             }
