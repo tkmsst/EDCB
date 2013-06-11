@@ -1164,7 +1164,6 @@ namespace EpgTimer
             {
                 ChgReserveWindow dlg = new ChgReserveWindow();
                 dlg.Owner = (Window)PresentationSource.FromVisual(this).RootVisual;
-                dlg.SetOpenMode(Settings.Instance.EpgInfoOpenMode);
                 dlg.SetReserveInfo(reserveInfo);
                 if (dlg.ShowDialog() == true)
                 {
