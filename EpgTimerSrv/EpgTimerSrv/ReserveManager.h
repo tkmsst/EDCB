@@ -292,7 +292,8 @@ protected:
 	LONGLONG ngCapTunerMin;
 	typedef struct _EPGTIME_INFO{
 		DWORD time;
-		BOOL swBasicOnly;
+		wstring swEPGType;		//	len=1の場合、1:基本情報のみ取得 それ以外:詳細情報取得
+								//	len=7の場合、日曜から始まる1日1文字、0:取得しない 1:基本情報のみ取得 2:詳細情報取得
 	}EPGTIME_INFO;
 	vector<EPGTIME_INFO> epgCapTimeList;
 	int wakeTime;

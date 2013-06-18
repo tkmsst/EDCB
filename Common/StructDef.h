@@ -707,6 +707,7 @@ typedef struct _SET_CH_INFO{
 	BOOL useBonCh;//dwSpaceとdwChの値が使用できるかどうか
 	DWORD space;
 	DWORD ch;
+	BOOL swBasic;
 	//=オペレーターの処理
 	_SET_CH_INFO & operator= (const _SET_CH_INFO & o) {
 		useSID = o.useSID;
@@ -716,6 +717,7 @@ typedef struct _SET_CH_INFO{
 		useBonCh = o.useBonCh;
 		space = o.space;
 		ch = o.ch;
+		swBasic = o.swBasic;
 		return *this;
 	};
 }SET_CH_INFO;

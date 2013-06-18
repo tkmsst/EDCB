@@ -135,7 +135,6 @@ namespace EpgTimer.Setting
                 comboBox_MM.DataContext = CommonManager.Instance.MinDictionary.Values;
                 comboBox_MM.SelectedIndex = 0;
 
-                chkEPGBasicOnly.IsChecked = false;
                 chkEnableEPGTimerType.IsChecked = false;
 
                 serviceList = new List<ServiceItem2>();
@@ -200,7 +199,7 @@ namespace EpgTimer.Setting
                 {
                     EpgCaptime item = new EpgCaptime();
                     item.IsSelected = true;
-                    item.IsBasicOnly = false;
+                    item.IsBasicOnly = "2222222";
                     item.Time = "23:00";
                     timeList.Add(item);
                 }
@@ -220,14 +219,10 @@ namespace EpgTimer.Setting
                         {
                             item.IsSelected = false;
                         }
-                        if (IniFileHandler.GetPrivateProfileInt("EPG_CAP", i.ToString() + "Basic", 0, SettingPath.TimerSrvIniPath) == 1)
-                        {
-                            item.IsBasicOnly = true;
-                        }
-                        else
-                        {
-                            item.IsBasicOnly = false;
-                        }
+
+                        buff.Clear();
+                        IniFileHandler.GetPrivateProfileString("EPG_CAP", i.ToString() + "Basic", "", buff, 512, SettingPath.TimerSrvIniPath);
+                        item.IsBasicOnly = buff.ToString();
                         timeList.Add(item);
                     }
                 }
@@ -368,14 +363,7 @@ namespace EpgTimer.Setting
                     {
                         IniFileHandler.WritePrivateProfileString("EPG_CAP", i.ToString() + "Select", "0", SettingPath.TimerSrvIniPath);
                     }
-                    if (item.IsBasicOnly == true)
-                    {
-                        IniFileHandler.WritePrivateProfileString("EPG_CAP", i.ToString() + "Basic", "1", SettingPath.TimerSrvIniPath);
-                    }
-                    else
-                    {
-                        IniFileHandler.WritePrivateProfileString("EPG_CAP", i.ToString() + "Basic", "0", SettingPath.TimerSrvIniPath);
-                    }
+                    IniFileHandler.WritePrivateProfileString("EPG_CAP", i.ToString() + "Basic", item.IsBasicOnly, SettingPath.TimerSrvIniPath);
                 }
 
 
@@ -702,14 +690,32 @@ namespace EpgTimer.Setting
                     EpgCaptime item = new EpgCaptime();
                     item.IsSelected = true;
                     item.Time = time;
-                    if (chkEPGBasicOnly.IsChecked==true)
+
+                    long wk = 0;
+                    string wkState = "";
+
+                    wk = cmb_Sunday.SelectedIndex;
+                    wkState = wk.ToString();
+                    wk = cmb_Monday.SelectedIndex;
+                    wkState += wk.ToString();
+                    wk = cmb_Tuesday.SelectedIndex;
+                    wkState += wk.ToString();
+                    wk = cmb_Wednesday.SelectedIndex;
+                    wkState += wk.ToString();
+                    wk = cmb_Thursday.SelectedIndex;
+                    wkState += wk.ToString();
+                    wk = cmb_Friday.SelectedIndex;
+                    wkState += wk.ToString();
+                    wk = cmb_Saturday.SelectedIndex;
+                    wkState += wk.ToString();
+                    
+                    if (wkState.Equals("0000000"))
                     {
-                        item.IsBasicOnly = true;
+                        MessageBox.Show("全曜日を無効に指定出来ません。");
+                        return;
                     }
-                    else
-                    {
-                        item.IsBasicOnly = false;
-                    }
+                    item.IsBasicOnly = wkState;
+
                     timeList.Add(item);
                 }
             }
@@ -733,6 +739,25 @@ namespace EpgTimer.Setting
             {
                 MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
             }
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            int swIdx = 2;
+            if ((cmb_Sunday.SelectedIndex == cmb_Monday.SelectedIndex) &&
+                (cmb_Sunday.SelectedIndex == cmb_Tuesday.SelectedIndex) &&
+                (cmb_Sunday.SelectedIndex == cmb_Wednesday.SelectedIndex) &&
+                (cmb_Sunday.SelectedIndex == cmb_Thursday.SelectedIndex) &&
+                (cmb_Sunday.SelectedIndex == cmb_Friday.SelectedIndex) &&
+                (cmb_Sunday.SelectedIndex == cmb_Saturday.SelectedIndex))
+            {
+                swIdx = ++cmb_Sunday.SelectedIndex % 3;
+            }
+            else
+            {
+                swIdx = 2;
+            }
+            cmb_Sunday.SelectedIndex = cmb_Monday.SelectedIndex = cmb_Tuesday.SelectedIndex = cmb_Wednesday.SelectedIndex = cmb_Thursday.SelectedIndex = cmb_Friday.SelectedIndex = cmb_Saturday.SelectedIndex = swIdx;
         }
 
     }

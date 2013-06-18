@@ -1099,14 +1099,21 @@ int CALLBACK CEpgDataCap_BonMain::CtrlCmdCallback(void* param, CMD_STREAM* cmdPa
 			vector<SET_CH_INFO> val;
 			if( ReadVALUE(&val, cmdParam->data, cmdParam->dataSize, NULL ) == TRUE ){
 				vector<EPGCAP_SERVICE_INFO> chList;
+				BOOL BSBasic = FALSE;
+				BOOL CS1Basic = FALSE;
+				BOOL CS2Basic = FALSE;
 				for( size_t i=0; i<val.size(); i++ ){
 					EPGCAP_SERVICE_INFO item;
 					item.ONID = val[i].ONID;
 					item.TSID = val[i].TSID;
 					item.SID = val[i].SID;
+					if((val[i].ONID==4) && (val[i].swBasic))	BSBasic = TRUE;
+					if((val[i].ONID==6) && (val[i].swBasic))	CS1Basic = TRUE;
+					if((val[i].ONID==7) && (val[i].swBasic))	CS2Basic = TRUE;
 					chList.push_back(item);
 				}
-				if( sys->bonCtrl.StartEpgCap(&chList, sys->BSBasic, sys->CS1Basic, sys->CS2Basic) == NO_ERR ){
+
+				if( sys->bonCtrl.StartEpgCap(&chList, BSBasic, CS1Basic, CS2Basic) == NO_ERR ){
 					PostMessage(sys->msgWnd, WM_RESERVE_EPGCAP_START, 0, 0);
 					
 					resParam->param = CMD_SUCCESS;

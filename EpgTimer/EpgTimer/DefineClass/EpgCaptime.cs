@@ -10,7 +10,8 @@ namespace EpgTimer
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private bool selected = false;
-        private bool basiconly = false;
+        //private bool basiconly = false;
+        private string epgtype = "";
 
         private void NotifyPropertyChanged(String info)
         {
@@ -37,26 +38,44 @@ namespace EpgTimer
         {
             get
             {
-                if (this.basiconly)
+                if (this.epgtype.Length == 1)
                 {
-                    return "基本のみ";
+                    if (this.epgtype.Equals("1"))
+                    {
+                        return "基本のみ";
+                    }
+                    else
+                    {
+                        return "";
+                    }
                 }
                 else
                 {
-                    return "";
+                    if (this.epgtype.Equals("1111111"))
+                    {
+                        return "基本のみ";
+                    }
+                    else if (this.epgtype.Equals("2222222"))
+                    {
+                        return "";
+                    }
+                    else
+                    {
+                        return this.epgtype;
+                    }
                 }
             }
         }
 
-        public bool IsBasicOnly
+        public string IsBasicOnly
         {
             get
             {
-                return this.basiconly;
+                return this.epgtype;
             }
             set
             {
-                this.basiconly = value;
+                this.epgtype = value;
                 NotifyPropertyChanged("IsBasicOnly");
             }
         }

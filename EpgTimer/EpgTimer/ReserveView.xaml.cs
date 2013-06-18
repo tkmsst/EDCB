@@ -175,30 +175,33 @@ namespace EpgTimer
                         return false;
                     }
                 }
-                ErrCode err = CommonManager.Instance.DB.ReloadReserveInfo();
-                if (err == ErrCode.CMD_ERR_CONNECT)
+                if (!isInDesignMode)
                 {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    ErrCode err = CommonManager.Instance.DB.ReloadReserveInfo();
+                    if (err == ErrCode.CMD_ERR_CONNECT)
                     {
-                        MessageBox.Show("サーバー または EpgTimerSrv に接続できませんでした。");
-                    }), null);
-                    return false;
-                }
-                if (err == ErrCode.CMD_ERR_TIMEOUT)
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MessageBox.Show("サーバー または EpgTimerSrv に接続できませんでした。");
+                        }), null);
+                        return false;
+                    }
+                    if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
-                    }), null);
-                    return false;
-                }
-                if (err != ErrCode.CMD_SUCCESS)
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。031");
+                        }), null);
+                        return false;
+                    }
+                    if (err != ErrCode.CMD_SUCCESS)
                     {
-                        MessageBox.Show("情報の取得でエラーが発生しました。");
-                    }), null);
-                    return false;
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            MessageBox.Show("情報の取得でエラーが発生しました。");
+                        }), null);
+                        return false;
+                    }
                 }
 
                 ICollectionView dataView = CollectionViewSource.GetDefaultView(listView_reserve.DataContext);
@@ -421,7 +424,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。032");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -457,7 +460,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。033");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -519,7 +522,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。034");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -583,7 +586,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。035");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -777,7 +780,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。036");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -811,7 +814,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。037");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -858,7 +861,7 @@ namespace EpgTimer
                     }
                     if (err == ErrCode.CMD_ERR_TIMEOUT)
                     {
-                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。");
+                        MessageBox.Show("EpgTimerSrvとの接続にタイムアウトしました。038");
                     }
                     if (err != ErrCode.CMD_SUCCESS)
                     {
@@ -907,6 +910,14 @@ namespace EpgTimer
             {
                 BlackoutWindow.selectedReserveItem = item1;
                 this._mainWindow.moveTo_tabItem_epg();
+            }
+        }
+
+        public bool isInDesignMode
+        {
+            get
+            {
+                return (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv");
             }
         }
 

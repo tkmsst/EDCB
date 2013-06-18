@@ -11,6 +11,7 @@
 #include <shlwapi.h>
 #include <algorithm>
 #include <locale>
+#include <atltime.h>
 
 #include <LM.h>
 #pragma comment (lib, "netapi32.lib")
@@ -369,14 +370,13 @@ void CReserveManager::ReloadSetting()
 
 			wstring basicKey;
 			Format(basicKey, L"%dBasic", i);
-			bool swBasicOnly = false;
-			if( GetPrivateProfileInt(L"EPG_CAP", basicKey.c_str(), 0, iniAppPath.c_str()) == 1 ){
-				swBasicOnly = true;
-			}
+			WCHAR buff[256] = L"";
+			GetPrivateProfileString(L"EPG_CAP", basicKey.c_str(), L"0", buff, 256, iniAppPath.c_str());
+			wstring swBasicOnly = buff;
 
 			wstring timeKey;
 			Format(timeKey, L"%d", i);
-			WCHAR buff[256] = L"";
+
 			GetPrivateProfileString(L"EPG_CAP", timeKey.c_str(), L"", buff, 256, iniAppPath.c_str());
 			wstring time = buff;
 			if( time.size() > 0 ){
@@ -387,7 +387,7 @@ void CReserveManager::ReloadSetting()
 				DWORD second = _wtoi(left.c_str()) * 60 * 60 + _wtoi(right.c_str()) * 60;
 				EPGTIME_INFO _ei;
 				_ei.time = second;
-				_ei.swBasicOnly = swBasicOnly;
+				_ei.swEPGType = swBasicOnly;
 				this->epgCapTimeList.push_back(_ei);
 			}
 		}
@@ -3166,16 +3166,10 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 			}
 		}
 
-		//EPG取得開始時の設定の一時保存
-		BOOL Tmp_BSOnly = false;
-		BOOL Tmp_CS1Only = false;
-		BOOL Tmp_CS2Only = false;
-		BOOL Tmp_EPGChg = false;
-
 		//EPG取得時間の確認
 		if( sys->Lock(L"BankCheckThread6") == TRUE){
-			LONGLONG capTime = 0;
 			BOOL swBasicOnly = false;
+			LONGLONG capTime = 0;
 			if( sys->GetNextEpgcapTime(&capTime, -1,&swBasicOnly) == TRUE ){
 				if( sys->useSrvCoop == TRUE &&sys->useEpgSrvCoop == TRUE){
 					if( (GetNowI64Time()+10*60*I64_1SEC) > capTime ){
@@ -3214,7 +3208,17 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 					}
 
 					if( sys->notifyManager != NULL && bUseTuner == TRUE ){
-						sys->notifyManager->AddNotifyMsg(NOTIFY_UPDATE_PRE_EPGCAP_START, L"取得開始１分前");
+						wstring iniCommonPath = L"";
+						GetCommonIniPath(iniCommonPath);
+						if(GetPrivateProfileInt(L"SET", L"EnableEPGTimerType", 0, iniCommonPath.c_str()) == 1){
+							if(swBasicOnly){
+								sys->notifyManager->AddNotifyMsg(NOTIFY_UPDATE_PRE_EPGCAP_START, L"取得開始１分前(基本情報)");
+							} else {
+								sys->notifyManager->AddNotifyMsg(NOTIFY_UPDATE_PRE_EPGCAP_START, L"取得開始１分前(詳細情報)");
+							}
+						} else {
+							sys->notifyManager->AddNotifyMsg(NOTIFY_UPDATE_PRE_EPGCAP_START, L"取得開始１分前");
+						}
 					}
 					sendPreEpgCap = TRUE;
 				}
@@ -3222,23 +3226,30 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 					//開始時間過ぎたので開始
 					wstring iniCommonPath = L"";
 					GetCommonIniPath(iniCommonPath);
-					if(GetPrivateProfileInt(L"SET", L"EnableEPGTimerType", 0, iniCommonPath.c_str()) == 1 && swBasicOnly == TRUE){
-						Tmp_BSOnly = sys->BSOnly;
-						Tmp_CS1Only = sys->CS1Only;
-						Tmp_CS2Only = sys->CS2Only;
-						Tmp_EPGChg = true;
-						// 基本情報のみ取得
-						sys->BSOnly = true;
-						sys->CS1Only = true;
-						sys->CS2Only = true;
-						WritePrivateProfileString(L"SET",L"BSBasicOnly",L"1",iniCommonPath.c_str());
-						WritePrivateProfileString(L"SET",L"CS1BasicOnly",L"1",iniCommonPath.c_str());
-						WritePrivateProfileString(L"SET",L"CS2BasicOnly",L"1",iniCommonPath.c_str());
-					OutputDebugString(L"CS2BasicOnly");
-						sys->notifyManager->AddNotifyMsg(NOTIFY_UPDATE_PRE_EPGCAP_START, L"基本情報のみ取得します");
+					//EPG取得開始時の設定の一時保存
+					BOOL Tmp_BSOnly = sys->BSOnly;
+					BOOL Tmp_CS1Only = sys->CS1Only;
+					BOOL Tmp_CS2Only = sys->CS2Only;
+
+					if(GetPrivateProfileInt(L"SET", L"EnableEPGTimerType", 0, iniCommonPath.c_str()) == 1){
+						if(swBasicOnly){
+							// 基本情報のみ取得
+							sys->BSOnly = true;
+							sys->CS1Only = true;
+							sys->CS2Only = true;
+						} else {
+							// 詳細情報も取得
+							sys->BSOnly = false;
+							sys->CS1Only = false;
+							sys->CS2Only = false;
+						}
 					}
 					sys->_StartEpgCap();
-					OutputDebugString(L"_StartEpgCap();");
+
+					// 振り分けが終わったのでもとに戻す
+					sys->BSOnly = Tmp_BSOnly;
+					sys->CS1Only = Tmp_CS1Only;
+					sys->CS2Only = Tmp_CS2Only;
 				}
 			}else{
 				//EPGの取得予定なし
@@ -3283,18 +3294,6 @@ UINT WINAPI CReserveManager::BankCheckThread(LPVOID param)
 		if( sys->epgCapCheckFlag == TRUE ){
 			if( sys->Lock(L"BankCheckThread9") == TRUE){
 				if( sys->_IsEpgCap() == FALSE ){
-					if(Tmp_EPGChg){
-						// EPG取得開始時の設定を書き戻し
-						wstring iniCommonPath = L"";
-						GetCommonIniPath(iniCommonPath);
-						sys->BSOnly = Tmp_BSOnly;
-						sys->CS1Only = Tmp_CS1Only;
-						sys->CS2Only = Tmp_CS2Only;
-						WritePrivateProfileString(L"SET",L"BSBasicOnly", sys->BSOnly  ? L"1" : L"0",iniCommonPath.c_str());
-						WritePrivateProfileString(L"SET",L"CS1BasicOnly",sys->CS1Only ? L"1" : L"0",iniCommonPath.c_str());
-						WritePrivateProfileString(L"SET",L"CS2BasicOnly",sys->CS2Only ? L"1" : L"0",iniCommonPath.c_str());
-						Tmp_EPGChg = false;
-					}
 					//取得完了
 					sys->_SendNotifyStatus(0);
 					sys->_SendNotifyUpdate(NOTIFY_UPDATE_EPGCAP_END);
@@ -4902,13 +4901,40 @@ BOOL CReserveManager::GetNextEpgcapTime(LONGLONG* capTime, LONGLONG chkMargineMi
 	srcTime.wHour = 0;
 	srcTime.wMilliseconds = 0;
 
-	map<LONGLONG,BOOL> timeList;
+	map<LONGLONG,int> timeList;
+	wstring swEPG;
+	int wkBasicOnly = 0;
 
 	for( size_t i=0; i<this->epgCapTimeList.size(); i++ ){
+		swEPG = this->epgCapTimeList[i].swEPGType;
+		int wDay = CTime::GetCurrentTime().GetDayOfWeek() - 1;	// Sunが1、Satが7なので、-1する
+		if(swEPG.length()==7){
+			size_t idx;
+			wkBasicOnly = stoi(swEPG.substr(wDay,1),&idx);
+		} else {
+			size_t idx;
+			if(stoi(swEPG,&idx)==0){
+				wkBasicOnly = 2;
+			} else {
+				wkBasicOnly = 1;
+			}
+		}
+
 		LONGLONG chkTime = GetSumTime(srcTime, this->epgCapTimeList[i].time);
-		timeList.insert(pair<LONGLONG,BOOL>(chkTime,this->epgCapTimeList[i].swBasicOnly));
+		if(wkBasicOnly>0){
+			timeList.insert(pair<LONGLONG,int>(chkTime,wkBasicOnly));
+		}
+
+		if(swEPG.length()==7){
+			wDay = ++wDay % 7;
+			size_t idx;
+			wkBasicOnly = stoi(swEPG.substr(wDay,1),&idx);
+		}
+
 		chkTime = GetSumTime(srcTime, this->epgCapTimeList[i].time + 24*60*60);
-		timeList.insert(pair<LONGLONG,BOOL>(chkTime,this->epgCapTimeList[i].swBasicOnly));
+		if(wkBasicOnly>0){
+			timeList.insert(pair<LONGLONG,int>(chkTime,wkBasicOnly));
+		}
 	}
 
 	if( timeList.size() == 0 ){
@@ -4917,16 +4943,22 @@ BOOL CReserveManager::GetNextEpgcapTime(LONGLONG* capTime, LONGLONG chkMargineMi
 
 	//そのまま判定したら直前で次の日になってしまうのでマージン分現在の時刻を調整
 	LONGLONG nowTime = GetNowI64Time() + (chkMargineMin*60*I64_1SEC);
-	map<LONGLONG,BOOL>::iterator itr;
+	map<LONGLONG,int>::iterator itr;
+	BOOL ret = FALSE;
 	for( itr = timeList.begin(); itr != timeList.end(); itr++){
 		if( nowTime < itr->first ){
+			ret = TRUE;
 			*capTime = itr->first;
-			*swBasicOnly = itr->second;
+			if(itr->second==1){
+				*swBasicOnly = true;
+			} else {
+				*swBasicOnly = false;
+			}
 			break;
 		}
 	}
 
-	return TRUE;
+	return ret;
 }
 
 //録画済み情報一覧を取得する
@@ -5016,7 +5048,7 @@ BOOL CReserveManager::StartEpgCap()
 {
 	if( Lock(L"StartEpgCap") == FALSE ) return FALSE;
 
-	BOOL ret = _StartEpgCap();		//	基本情報以外も取得する
+	BOOL ret = _StartEpgCap();
 
 	UnLock();
 	return ret;
@@ -5113,6 +5145,10 @@ BOOL CReserveManager::_StartEpgCap()
 					addItem.SID = itrAdd->second.serviceID;
 					addItem.useSID = TRUE;
 					addItem.useBonCh = FALSE;
+					addItem.swBasic = FALSE;
+					if((itrAdd->second.originalNetworkID == 4) && (this->BSOnly))	addItem.swBasic = TRUE;
+					if((itrAdd->second.originalNetworkID == 6) && (this->CS1Only))	addItem.swBasic = TRUE;
+					if((itrAdd->second.originalNetworkID == 7) && (this->CS2Only))	addItem.swBasic = TRUE;
 					itrCtrl->second->AddEpgCapItem(addItem);
 
 					add = TRUE;
@@ -5140,8 +5176,9 @@ BOOL CReserveManager::_StartEpgCap()
 	}
 	this->epgCapCheckFlag = TRUE;
 
-	_SendNotifyStatus(2);
+	_SendNotifyStatus(2);	//	アイコンを緑に
 	_SendNotifyUpdate(NOTIFY_UPDATE_EPGCAP_START);
+
 	this->setTimeSync = FALSE;
 
 	return ret;

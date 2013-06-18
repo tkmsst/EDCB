@@ -1448,6 +1448,8 @@ DWORD CBonCtrl::GetEpgCapStatus(
 	return ret;
 }
 
+//#define IDC_EDIT_LOG                    1015
+
 UINT WINAPI CBonCtrl::EpgCapThread(LPVOID param)
 {
 	CBonCtrl* sys = (CBonCtrl*)param;
@@ -1470,6 +1472,8 @@ UINT WINAPI CBonCtrl::EpgCapThread(LPVOID param)
 
 	DWORD timeOut = GetPrivateProfileInt(L"EPGCAP", L"EpgCapTimeOut", 15, iniPath.c_str());
 	BOOL saveTimeOut = GetPrivateProfileInt(L"EPGCAP", L"EpgCapSaveTimeOut", 0, iniPath.c_str());
+
+//	SetDlgItemText(IDC_EDIT_LOG, L"");
 
 	while(1){
 		if( ::WaitForSingleObject(sys->epgCapStopEvent, wait) != WAIT_TIMEOUT ){

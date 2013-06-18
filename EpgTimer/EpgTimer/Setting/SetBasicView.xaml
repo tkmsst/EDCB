@@ -85,7 +85,7 @@
                     <Button Content="全クリア" Height="23" HorizontalAlignment="Left" Margin="234,104,0,0" Name="button_allClear" VerticalAlignment="Top" Width="169" Click="button_allClear_Click" Style="{StaticResource ButtonStyle1}" />
                     <Label Content="EPG取得開始時間 (有効にするものにチェック)" Height="28" HorizontalAlignment="Left" Margin="12,235,0,0" Name="label24" VerticalAlignment="Top" />
 
-                    <ListView Height="86" HorizontalAlignment="Left" Margin="32,270,0,0" Name="ListView_time" VerticalAlignment="Top" Width="230" ItemsSource="{Binding}">
+                    <ListView Height="93" HorizontalAlignment="Left" Margin="32,270,0,0" Name="ListView_time" VerticalAlignment="Top" Width="230" ItemsSource="{Binding}">
                         <ListView.View>
                             <GridView x:Name="gridView_time">
                                 <GridViewColumn>
@@ -108,19 +108,61 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Content="追加" Height="23" HorizontalAlignment="Left" Margin="286,274,0,0" Name="button_addTime" VerticalAlignment="Top" Width="75" Click="button_addTime_Click" Style="{StaticResource ButtonStyle1}" />
-                    <Button Content="削除" Height="23" HorizontalAlignment="Left" Margin="286,303,0,0" Name="button_delTime" VerticalAlignment="Top" Width="75" Click="button_delTime_Click" Style="{StaticResource ButtonStyle1}" />
-                    <ComboBox Height="24" HorizontalAlignment="Left" Margin="376,273,0,0" Name="comboBox_HH" VerticalAlignment="Top" Width="47" ItemsSource="{Binding}" />
-                    <Label Content="：" Height="28" HorizontalAlignment="Left" Margin="429,272,0,0" Name="label25" VerticalAlignment="Top" />
-                    <ComboBox Height="24" HorizontalAlignment="Left" Margin="457,273,0,0" Name="comboBox_MM" VerticalAlignment="Top" Width="47" ItemsSource="{Binding}" />
-                    <Label Content="実行抑制条件" Height="28" HorizontalAlignment="Left" Margin="12,360,0,0" Name="label26" VerticalAlignment="Top" />
-                    <TextBox Height="24" HorizontalAlignment="Left" Margin="159,362,0,0" Name="textBox_ngCapMin" VerticalAlignment="Top" Width="49" />
-                    <Label Content="分以内に予約がある場合、実行しない　(0で録画時も実行)" Height="28" HorizontalAlignment="Left" Margin="226,360,0,0" Name="label27" VerticalAlignment="Top" />
-                    <Label Content="使用チューナー条件" Height="28" HorizontalAlignment="Left" Margin="12,394,0,0" Name="label28" VerticalAlignment="Top" />
-                    <TextBox Height="24" HorizontalAlignment="Left" Margin="159,396,0,0" Name="textBox_ngTunerMin" VerticalAlignment="Top" Width="49" />
-                    <Label Content="分以内に予約がある場合、使用しない" Height="28" HorizontalAlignment="Left" Margin="226,394,0,0" Name="label29" VerticalAlignment="Top" />
-                    <CheckBox Content="基本情報のみ" Height="16" HorizontalAlignment="Left" Margin="528,277,0,0" Name="chkEPGBasicOnly" VerticalAlignment="Top" />
+                    <Button Content="追加" Height="23" HorizontalAlignment="Left" Margin="286,270,0,0" Name="button_addTime" VerticalAlignment="Top" Width="75" Click="button_addTime_Click" Style="{StaticResource ButtonStyle1}" />
+                    <Button Content="削除" Height="23" HorizontalAlignment="Left" Margin="287,340,0,0" Name="button_delTime" VerticalAlignment="Top" Width="75" Click="button_delTime_Click" Style="{StaticResource ButtonStyle1}" />
+                    <Button Content="全部" Height="23" HorizontalAlignment="Left" Margin="531,270,0,0" Name="button1" Style="{StaticResource ButtonStyle1}" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+                    <ComboBox Height="24" HorizontalAlignment="Left" Margin="376,269,0,0" Name="comboBox_HH" VerticalAlignment="Top" Width="47" ItemsSource="{Binding}" />
+                    <Label Content="：" Height="28" HorizontalAlignment="Left" Margin="429,268,0,0" Name="label25" VerticalAlignment="Top" />
+                    <ComboBox Height="24" HorizontalAlignment="Left" Margin="457,269,0,0" Name="comboBox_MM" VerticalAlignment="Top" Width="47" ItemsSource="{Binding}" />
+                    <Label Content="実行抑制条件" Height="28" HorizontalAlignment="Left" Margin="12,370,0,0" Name="label26" VerticalAlignment="Top" />
+                    <TextBox Height="24" HorizontalAlignment="Left" Margin="159,372,0,0" Name="textBox_ngCapMin" VerticalAlignment="Top" Width="49" />
+                    <Label Content="分以内に予約がある場合、実行しない　(0で録画時も実行)" Height="28" HorizontalAlignment="Left" Margin="226,370,0,0" Name="label27" VerticalAlignment="Top" />
+                    <Label Content="使用チューナー条件" Height="28" HorizontalAlignment="Left" Margin="12,404,0,0" Name="label28" VerticalAlignment="Top" />
+                    <TextBox Height="24" HorizontalAlignment="Left" Margin="159,406,0,0" Name="textBox_ngTunerMin" VerticalAlignment="Top" Width="49" />
+                    <Label Content="分以内に予約がある場合、使用しない" Height="28" HorizontalAlignment="Left" Margin="226,404,0,0" Name="label29" VerticalAlignment="Top" />
                     <CheckBox Content="タイマー取得時の取得種別を有効にする" Height="16" HorizontalAlignment="Left" Margin="286,241,0,0" Name="chkEnableEPGTimerType" VerticalAlignment="Top" />
+                    <Label Content="日曜日" Height="23" HorizontalAlignment="Left" Margin="287,291,0,0" Name="label6" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <Label Content="月曜日" Height="23" HorizontalAlignment="Left" Margin="348,291,0,0" Name="label7" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <Label Content="火曜日" Height="23" HorizontalAlignment="Left" Margin="409,291,0,0" Name="label8" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <Label Content="水曜日" Height="23" HorizontalAlignment="Left" Margin="470,291,0,0" Name="label9" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <Label Content="木曜日" Height="23" HorizontalAlignment="Left" Margin="531,291,0,0" Name="labelA" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <Label Content="金曜日" Height="23" HorizontalAlignment="Left" Margin="592,291,0,0" Name="labelB" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <Label Content="土曜日" Height="23" HorizontalAlignment="Left" Margin="653,291,0,0" Name="labelC" VerticalAlignment="Top" Width="55" HorizontalContentAlignment="Center" FontSize="10" VerticalContentAlignment="Center" />
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="287,311,0,0" Name="cmb_Sunday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="348,311,0,0" Name="cmb_Monday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="409,311,0,0" Name="cmb_Tuesday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="470,311,0,0" Name="cmb_Wednesday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="531,311,0,0" Name="cmb_Thursday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="592,311,0,0" Name="cmb_Friday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
+                    <ComboBox Height="21" HorizontalAlignment="Left" Margin="653,311,0,0" Name="cmb_Saturday" SelectedIndex="2" ToolTip="EPGデータ取得種別を指定します。" VerticalAlignment="Top" Width="55">
+                        <ComboBoxItem Content="無効" />
+                        <ComboBoxItem Content="基本" />
+                        <ComboBoxItem Content="詳細" />
+                    </ComboBox>
                 </Grid>
             </TabItem>
         </TabControl>
